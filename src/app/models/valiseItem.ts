@@ -1,7 +1,6 @@
 export interface valiseItem{
     name: String;
     isInValise: Boolean;
-    place: String;
 }
 
 export interface allValiseItem{

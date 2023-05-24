@@ -6,7 +6,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 @Component({
   selector: 'app-valise-tab',
   templateUrl: './valise-tab.component.html',
-  styleUrls: ['./valise-tab.component.css']
+  styleUrls: ['./valise-tab.component.scss']
 })
 
 export class ValiseTabComponent implements OnInit, OnChanges {
@@ -47,6 +47,7 @@ export class ValiseTabComponent implements OnInit, OnChanges {
   }
 
   public deleteItem(id, place){
+    console.log("item to delete: ", id, place)
     this.deleteItemEmit.emit({id: id, place: place})
   }
 
@@ -54,12 +55,7 @@ export class ValiseTabComponent implements OnInit, OnChanges {
     this.activeTabEmit.emit(this.valiseName)
   }
 
-  // public sortDrop(event: CdkDragDrop<valiseItem[]>) {
-  //   console.log('sort')
-  //   moveItemInArray(this.valiseContent, event.previousIndex, event.currentIndex);
-  // }
-
-  public drop(event: CdkDragDrop<valiseItem[]>) {
-    console.log("dropped out-o")
+  public sortDrop(event: CdkDragDrop<valiseItem[]>) {
+    console.log(event)
   }
 }

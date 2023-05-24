@@ -29,22 +29,22 @@
             </form>
         </div>
     </header>
-    <main class="p-8 flex flex-col gap-4 items-center">
+    <main class="p-8 flex flex-col gap-4 items-center main" cdkDropListGroup>
         <h2 class="font-serif text-2xl text-indigo-500">État</h2>
         <!-- tabstitle -->
-        <!-- <div class="w-full max-w-3xl">
+        <div class="w-full max-w-3xl">
             <ul class="flex flex-col gap-2 sm:flex-row">
-                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="cabine" (click)="activeTab('cabine')" [ngClass]="{'ADD CLASS': activeTabName === 'cabine'}" (cdkDropListDropped)="drop($event)">
-                    <a>Valise de cabine&nbsp;(<span id="reste-cabine" class="reste">{{itemNumbers.cabine}}</span>)</a>
+                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="cabine" (click)="activeTab('cabine')" [ngClass]="{'bg-indigo-800 text-white': activeTabName === 'cabine'}" cdkDropList (cdkDropListDropped)="sortDrop($event)"  [cdkDropListData]="valiseItems.cabine">
+                    <a class="pointer-events-none">Valise de cabine&nbsp;(<span id="reste-cabine" class="reste">{{itemNumbers.cabine}}</span>)</a>
                 </li>
-                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="soute" (click)="activeTab('soute')" [ngClass]="{'ADD CLASS': activeTabName === 'soute'}" (cdkDropListDropped)="drop($event)">
-                    <a>Valise de soute&nbsp;(<span id="reste-soute" class="reste">{{itemNumbers.soute}}</span>)</a>
+                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="soute" (click)="activeTab('soute')" [ngClass]="{'bg-indigo-800 text-white': activeTabName === 'soute'}" cdkDropList (cdkDropListDropped)="sortDrop($event)"  [cdkDropListData]="valiseItems.soute">
+                    <a class="pointer-events-none">Valise de soute&nbsp;(<span id="reste-soute" class="reste">{{itemNumbers.soute}}</span>)</a>
                 </li>
-                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="main" (click)="activeTab('main')" [ngClass]="{'ADD CLASS': activeTabName === 'main'}" (cdkDropListDropped)="drop($event)">
-                    <a>Sac à main&nbsp;(<span id="reste-main" class="reste">{{itemNumbers.main}}</span>)</a>
+                <li class="px-3 py-2 rounded bg-indigo-200 text-indigo-800 hover:bg-indigo-800 hover:text-indigo-200 cursor-pointer transition-all duration-200 ease-out" data-tab="main" (click)="activeTab('main')" [ngClass]="{'bg-indigo-800 text-white': activeTabName === 'main'}" cdkDropList (cdkDropListDropped)="sortDrop($event)"  [cdkDropListData]="valiseItems.main">
+                    <a class="pointer-events-none">Sac à main&nbsp;(<span id="reste-main" class="reste">{{itemNumbers.main}}</span>)</a>
                 </li>
             </ul>
-        </div> -->
+        </div>
         <!-- end tabstitle -->
         <!-- tabscontent -->
         <!-- tabcontent 1 -->
@@ -56,6 +56,7 @@
             [activeTabName]="activeTabName"
             (checkItemEmit)="checkItem($event)"
             (deleteItemEmit)="deleteItem($event)"
+            cdkDropList (cdkDropListDropped)="sortDrop($event)"  [cdkDropListData]="content.value"
             >
             </app-valise-tab>
         </div>

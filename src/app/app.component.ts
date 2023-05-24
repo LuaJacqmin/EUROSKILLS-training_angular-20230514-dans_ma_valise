@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -8,7 +8,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 
 export class AppComponent implements OnInit, OnDestroy{
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy{
     main: []
   } 
 
-  public activeTabName: string = 'soute';
+  public activeTabName: string = 'cabine';
   public itemNumbers: any = {
     soute: 0,
     cabine: 0,
@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   private newItemInformation: valiseItem;
+  public hoveredTab: string;
 
   private destroy$: Subject<boolean> = new Subject<boolean>()
 
@@ -49,8 +50,7 @@ export class AppComponent implements OnInit, OnDestroy{
       .subscribe(data => {
         this.newItemInformation = {
           name: data.newItemName,
-          isInValise: false,
-          place: data.newItemPlace,
+          isInValise: false
         }
       })
 
@@ -108,7 +108,6 @@ export class AppComponent implements OnInit, OnDestroy{
             this.itemNumbers[place] - 1 >= 0 && (this.itemNumbers[place]--)
           } else {
             item.isInValise = false;
-            this.itemNumbers[place]++
           }
 
           this.setIntoLocalStorage(this.valiseItems)
@@ -120,12 +119,16 @@ export class AppComponent implements OnInit, OnDestroy{
 
   public deleteItem(event){
     for(let [place, items] of Object.entries(this.valiseItems)){
+      console.log(place, ": ", items)
       let i = 0;
       items.forEach(item => {
         if(event.id === i && place === event.place){
           items.splice(i, 1);
-          this.itemNumbers[place] - 1 >= 0 && (this.itemNumbers[place]--);
 
+          if(!item.isInValise){
+            this.itemNumbers[place] - 1 >= 0 && (this.itemNumbers[place]--);
+          }
+        
           this.isNotifActive = true;
           this.notificationMessage = "Objet supprimé !"
           
@@ -161,10 +164,30 @@ export class AppComponent implements OnInit, OnDestroy{
     localStorage.setItem('valiseContent', JSON.stringify(content))
   }
 
-  public test = ["pain", "salade", "tomate"];
+  public sortDrop(event: CdkDragDrop<valiseItem[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
 
-  public drop(event: CdkDragDrop<valiseItem[]>) {
-    console.log("dropped out-o")
+      for(let [place, items] of Object.entries(this.valiseItems)){
+        this.itemNumbers[place] = 0;
+
+        items.forEach(item => {
+          if(!item.isInValise){
+            this.itemNumbers[place]++
+          }
+        });
+      }
+    }
+
+    this.setIntoLocalStorage(this.valiseItems)
+    console.log(this.valiseItems)
   }
 }
 
